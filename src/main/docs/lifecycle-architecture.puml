@@ -1,0 +1,80 @@
+@startuml
+
+database SourceConfigurationManagement [
+<b>Source Configuration Management
+----
+revisions
+....
+branches
+....
+tags
+]
+database BinaryRepository [
+<b>Binary Repository
+----
+snapshot revisions
+....
+release versions
+....
+workflow
+]
+
+node DeveloperIDE [
+<b>Developer IDE
+----
+editor
+....
+build
+....
+TDD
+....
+Refactoring
+]
+
+node ContinuousIntegration [
+<b>Continuous Integration
+----
+build
+....
+pipeline
+....
+release
+....
+testing
+]
+node AutomationEngine [
+<b>Automation Engine
+----
+recipes / plans
+....
+credential management
+....
+authorisation
+]
+
+[Container]
+
+artifact SourceCode
+artifact ApplicationPackage
+artifact Configuration
+artifact DeploymentRecipe
+DeveloperIDE ==> SourceCode: <<creates>>
+DeveloperIDE ==> DeploymentRecipe: <<creates>>
+DeveloperIDE ==> Configuration: <<creates>>
+DeveloperIDE ---> SourceConfigurationManagement: <<commit>>
+ContinuousIntegration ---> SourceConfigurationManagement: <<checkout>>
+ContinuousIntegration ===> BinaryRepository: <<publish>>
+SourceConfigurationManagement ==> SourceCode: <<versions>>
+SourceConfigurationManagement ==> DeploymentRecipe: <<versions>>
+SourceConfigurationManagement =down=> Configuration: <<versions>>
+BinaryRepository ===> ApplicationPackage: <<revision>>
+AutomationEngine ...> Container: <<orchestrate>>
+AutomationEngine ---> BinaryRepository: <<fetch>>
+AutomationEngine ---> SourceConfigurationManagement: <<fetch>>
+AutomationEngine ---> DeploymentRecipe: <<apply>>
+AutomationEngine ---> Configuration: <<apply>>
+AutomationEngine ---> ApplicationPackage: <<deploy>>
+Container ..> Configuration: <<exposes>>
+Container <==> ApplicationPackage: <<execute>>
+
+@enduml

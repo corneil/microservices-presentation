@@ -1,0 +1,17 @@
+@startuml
+
+package "Server" {
+    HTTP - [Apache]
+    AJP - [Tomcat]
+    JDBC - [MySQL]
+}
+
+Tomcat --> JDBC : data
+Apache --> AJP : requests
+
+note right of [Tomcat]
+  Java Servlet Specification
+  Web Application
+end note
+
+@enduml

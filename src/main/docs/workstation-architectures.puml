@@ -1,0 +1,23 @@
+@startuml
+
+node "Workstation" {
+    [Application]
+}
+
+node "Server" {
+    RPC - [Service]
+}
+
+Application --> RPC: client
+
+note left of Application
+  Mostly synchronous services.
+end note
+
+note left of RPC
+  DCE/RPC and CORBA
+  are examples of standards.
+end note
+
+
+@enduml

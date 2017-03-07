@@ -1,0 +1,33 @@
+@startuml
+
+left to right direction
+
+node WebServer {
+   https - [Apache]
+}
+
+node Container {
+    http - [Application]
+}
+
+package BackingServices {
+    hazelcast -- [Hazelcast]
+    jdbc -- [PostgreSQL]
+    amqp -- [RabbitMQ]
+    smtp -- [MailServer]
+    redis -- [Redis]
+    mongodb -- [MongoDB]
+    logstash -- [Elasticsearch]
+}
+
+Apache ..> http: <<load-balancing>>
+Application ..> jdbc: <<transactional-data>>
+Application ..> mongodb: <<document-data>>
+Application ..> amqp: <<messaging>>
+Application ..> smtp: <<mail>>
+Application ..> redis: <<config>>
+Application ..> hazelcast: <<distributed-cache>>
+Application ..> logstash: <<logging>>
+Apache ..> logstash: <<logging>>
+
+@enduml

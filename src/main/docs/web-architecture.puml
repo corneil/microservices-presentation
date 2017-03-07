@@ -1,0 +1,20 @@
+@startuml
+
+package "Web Tier" {
+    HTTP - [Apache]
+}
+
+package "Application Tier" {
+    AJP -down- [Tomcat]
+    JSR107 - [Hazelcast]
+}
+
+package "Data Tier" {
+    JDBC - [MySQL]
+}
+
+Tomcat -right-> JSR107 : <<session cache>>
+Tomcat --> JDBC
+[Apache] --> AJP
+
+@enduml

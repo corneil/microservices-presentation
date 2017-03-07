@@ -1,0 +1,42 @@
+@startuml
+
+left to right direction
+
+package "Channel" {
+    [Portlet]
+    [UI Component]
+    [Web Application]
+    [Mobile Application]
+}
+
+package "Application Tier" {
+    applicationEndpoint -- [Application Service]
+    bpm - [Business Processes]
+    rules - [Rules Engine]
+}
+
+[Web Application] ...> applicationEndpoint: <<REST>>
+[Mobile Application] ...> applicationEndpoint: <<REST>>
+[Portlet] ...> applicationEndpoint
+[UI Component] ...> applicationEndpoint
+
+[Application Service] .> bpm
+[Business Processes] ..> rules
+
+package "Service Tier" {
+    documentEndpoint -- [Document Service]
+    emailEndPoint --- [Email Service]
+    database ExpensiveDatabaseServer
+    messageQueue -- [MessageQueueServer]
+    smsEndpoint - [SMS Service]
+}
+
+[Application Service] ..> ExpensiveDatabaseServer
+[Application Service] ...> messageQueue
+[Application Service] ...> documentEndpoint
+[Business Processes] ...> documentEndpoint
+[Business Processes] ...> smsEndpoint
+[Business Processes] ...> emailEndPoint
+[SMS Service] ..> ExpensiveDatabaseServer
+
+@enduml
