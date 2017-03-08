@@ -9,25 +9,29 @@ node WebServer {
 node Container {
     http - [Application]
 }
+package PlatformServices {
+    registry -- [ServiceRegistry]
+    config -- [ConfigurationService]
 
+}
 package BackingServices {
-    hazelcast -- [Hazelcast]
-    jdbc -- [PostgreSQL]
-    amqp -- [RabbitMQ]
+    cache -- [DistributedCache]
+    jdbc -- [RelationalDatabase]
+    amqp -- [MessageQueueServer]
     smtp -- [MailServer]
-    redis -- [Redis]
-    mongodb -- [MongoDB]
-    logstash -- [Elasticsearch]
+    docrest -- [DocumentDatabase]
+    logging -- [LoggingStore]
 }
 
-Apache ..> http: <<load-balancing>>
-Application ..> jdbc: <<transactional-data>>
-Application ..> mongodb: <<document-data>>
-Application ..> amqp: <<messaging>>
-Application ..> smtp: <<mail>>
-Application ..> redis: <<config>>
-Application ..> hazelcast: <<distributed-cache>>
-Application ..> logstash: <<logging>>
-Apache ..> logstash: <<logging>>
+Apache --> http: <<load-balancing>>
+Application --> jdbc
+Application ..> config
+Application ..> registry
+Application --> docrest
+Application --> amqp
+Application --> smtp
+Application ..> cache
+Application ..> logging
+Apache ..> logging
 
 @enduml

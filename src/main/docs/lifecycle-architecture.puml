@@ -1,7 +1,7 @@
 @startuml
 
-database SourceConfigurationManagement [
-<b>Source Configuration Management
+database VersionControlSystem [
+<b>Version Control System
 ----
 revisions
 ....
@@ -59,18 +59,16 @@ artifact ApplicationPackage
 artifact Configuration
 artifact DeploymentRecipe
 DeveloperIDE ==> SourceCode: <<creates>>
-DeveloperIDE ==> DeploymentRecipe: <<creates>>
-DeveloperIDE ==> Configuration: <<creates>>
-DeveloperIDE ---> SourceConfigurationManagement: <<commit>>
-ContinuousIntegration ---> SourceConfigurationManagement: <<checkout>>
+DeveloperIDE ---> VersionControlSystem: <<commit>>
+ContinuousIntegration ---> VersionControlSystem: <<checkout>>
 ContinuousIntegration ===> BinaryRepository: <<publish>>
-SourceConfigurationManagement ==> SourceCode: <<versions>>
-SourceConfigurationManagement ==> DeploymentRecipe: <<versions>>
-SourceConfigurationManagement =down=> Configuration: <<versions>>
+VersionControlSystem ==> SourceCode: <<versions>>
+VersionControlSystem ==> DeploymentRecipe: <<versions>>
+VersionControlSystem =down=> Configuration: <<versions>>
 BinaryRepository ===> ApplicationPackage: <<revision>>
 AutomationEngine ...> Container: <<orchestrate>>
 AutomationEngine ---> BinaryRepository: <<fetch>>
-AutomationEngine ---> SourceConfigurationManagement: <<fetch>>
+AutomationEngine ---> VersionControlSystem: <<fetch>>
 AutomationEngine ---> DeploymentRecipe: <<apply>>
 AutomationEngine ---> Configuration: <<apply>>
 AutomationEngine ---> ApplicationPackage: <<deploy>>
